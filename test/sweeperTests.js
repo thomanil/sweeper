@@ -4,52 +4,43 @@ TestCase("FirstTestcase", {
 	   assertTrue(sweeper !== undefined);
     },
 
-	testFieldStringIntoGrid: function(){
-		var field = "*..\n"+
-					"..*\n"+
-					"...";
 
-		var expected = new Grid([["*", ".", "."],
-						[".", ".", "*"],
-						[".", ".", "."]]);
-						
-		var actual = sweeper.fieldToGrid(field);
-						
-	    assertTrue(expected.equals(actual));
-	},
+	testTurnFieldStringIntoGrid: function(){
+		var field ="..*\n"+
+		"...\n"+
+		"*..";
+
+		var expected = new Grid([[".",".","*"],
+								[".",".","."],
+								["*",".","."]]);
+		
+		var actual = sweeper.fieldStringToGrid(field);
+		assertTrue(expected.equals(actual));
+	},					
 	
-	testCountNeighbours: function(){
-			var grid = new Grid([["*", ".", "."],
-							[".", ".", "*"],
-							[".", ".", "."]]);
-							
-			var expected11cellNeighbourcount = 2;
-			
-			assertEquals(expected11cellNeighbourcount, sweeper.countNeighbours(grid, 1, 1));					
+	testMinecount: function(){
+		var grid = new Grid([[".",".","*"],
+							 [".",".","."],
+							 ["*",".","."]]);
+
+		assertEquals(2, sweeper.countMinedNeighbours(grid, 1, 1));				
 	},
 	
 	testSolveField: function(){
-		var grid = new Grid([["*", ".", "."],
-							[".", ".", "*"],
-							[".", ".", "."]]);
+		var grid = new Grid([[".",".","*"],
+							 [".",".","."],
+							 ["*",".","."]]);
 							
-		var expected = new Grid([["*", "2", "1"],
-								["1", "2", "*"],
-								["0", "1", "1"]]);					
-				
-																
-		var actual = sweeper.solve(grid);
-		
-		assertEquals(expected, actual);												
+		var soluton = new Grid([["0","1","*"],
+							   ["1","2","1"],
+							   ["*","1","0"]]);		
+										
+		assertEquals(soluton, sweeper.solve(grid));					
 	},
 	
 	testButtonCreation: function(){
-		    var btn = sweeper.createBtn("*");
-			assertEquals("?", btn.html());
-	}
-	
-
-	
-	
+		var btn = sweeper.createButton("*");
+		assertEquals("?", btn.html());
+	},
 
 });
