@@ -1,39 +1,55 @@
 TestCase("FirstTestcase", {
 	
-    testProjectNamespace:function(){
-	   assertTrue("Checking that project namespace exists", sweeper !== undefined);
+    testProjectNamespaceExists:function(){
+	   assertTrue(sweeper !== undefined);
     },
 
-	testTurnFielStringIntoGrid: function(attribute){
-		var field =	".*.\n"+
+	testFieldStringIntoGrid: function(){
+		var field = "*..\n"+
 					"..*\n"+
 					"...";
-		var expected = Grid.wrap([[".","*","."],			
-					   			  [".",".","*"],
-					   			  [".",".","."]]);
-		var actual = sweeper.fieldStringIntoGrid(field);			
-		assertTrue(expected.equals(actual));			
+
+		var expected = new Grid([["*", ".", "."],
+						[".", ".", "*"],
+						[".", ".", "."]]);
+						
+		var actual = sweeper.fieldToGrid(field);
+						
+	    assertTrue(expected.equals(actual));
 	},
 	
-	testNeighbourcount: function(){
-			var grid = Grid.wrap([[".","*","."],			
-						 		  [".",".","*"],
-						 		  [".",".","."]]);
-		    var expected = 2;
-			var actual = sweeper.countMinedNeighbours(grid, 1, 1);
-			assertEquals(expected,actual);
+	testCountNeighbours: function(){
+			var grid = new Grid([["*", ".", "."],
+							[".", ".", "*"],
+							[".", ".", "."]]);
+							
+			var expected11cellNeighbourcount = 2;
+			
+			assertEquals(expected11cellNeighbourcount, sweeper.countNeighbours(grid, 1, 1));					
 	},
 	
-   testSolveField: function(){
-   	 	var grid = Grid.wrap([[".","*"],			
-					 		  [".","."],
-					 		  ["*","."]]);
-		var expected = Grid.wrap([["1","*"],			
-					 	      	  ["2","2"],
-							  	  ["*","1"]]);
-        var actual = sweeper.solve(grid);	
-		assertTrue(expected.equals(actual));		
-   }
+	testSolveField: function(){
+		var grid = new Grid([["*", ".", "."],
+							[".", ".", "*"],
+							[".", ".", "."]]);
+							
+		var expected = new Grid([["*", "2", "1"],
+								["1", "2", "*"],
+								["0", "1", "1"]]);					
+				
+																
+		var actual = sweeper.solve(grid);
+		
+		assertEquals(expected, actual);												
+	},
+	
+	testButtonCreation: function(){
+		    var btn = sweeper.createBtn("*");
+			assertEquals("?", btn.html());
+	}
+	
+
+	
 	
 
 });
