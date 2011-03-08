@@ -10,7 +10,6 @@ var sweeper = (function() { // Module pattern
 		
 		toGrid: function(field){
 			var rows = field.split(/\n/);
-			
 			var twoDimArray = [];
 			_(rows).each(function(row){
 				var cells = [];
@@ -22,7 +21,7 @@ var sweeper = (function() { // Module pattern
 			return new Grid(twoDimArray);
 		},
 		
-		countMinedNeighbours: function(grid, x, y){
+		countNeighbours: function(grid, x, y){
 			var isMined = function(deltaX, deltaY) {
 				var xPos = x+deltaX;
 				var yPos = y+deltaY;
@@ -33,20 +32,18 @@ var sweeper = (function() { // Module pattern
 				}
 			};
 			
+			var mineCount = 0;
 			
-			var minedNeighbours = 0;
-		
-			if (isMined(-1,-1)) {minedNeighbours++;}
-			if (isMined(0,-1)) {minedNeighbours++;}
-			if (isMined(1,-1)) {minedNeighbours++;}
-			if (isMined(-1,1)) {minedNeighbours++;}
-			if (isMined(0,1)) {minedNeighbours++;}
-			if (isMined(1,1)) {minedNeighbours++;}
-			if (isMined(-1,0)) {minedNeighbours++;}
-			if (isMined(1,0)) {minedNeighbours++;}		
-		
-		
-			return minedNeighbours;
+			if (isMined(-1,-1)) {mineCount++;}
+			if (isMined(0,-1)) {mineCount++;}
+			if (isMined(1,-1)) {mineCount++;}
+			if (isMined(-1,1)) {mineCount++;}
+			if (isMined(0,1)) {mineCount++;}
+			if (isMined(1,1)) {mineCount++;}
+			if (isMined(-1,0)) {mineCount++;}
+			if (isMined(1,0)) {mineCount++;}
+			
+			return mineCount; 
 		},
 		
 		solve: function(grid){
@@ -54,9 +51,9 @@ var sweeper = (function() { // Module pattern
 				if (cell === "*") {
 					return cell;
 				} else {
-					return ""+sweeper.countMinedNeighbours(grid, x, y);
+					return ""+sweeper.countNeighbours(grid, x, y);
 				}
-			});	
+			});
 		},
 		
 		createButton: function(cell){
@@ -67,7 +64,7 @@ var sweeper = (function() { // Module pattern
 				btn.html(cell);
 				if (cell === "*") {
 					btn.css("color","red");
-					alert("BOOOOM GAME OVER");
+					alert("BOOOM GAME OVER!");
 				} else {
 					btn.css("color","green");
 				}
@@ -75,26 +72,24 @@ var sweeper = (function() { // Module pattern
 			return btn;
 		},
 		
-		setupPlayfield: function(field){
+		initGame: function(field){
 			var grid = sweeper.toGrid(field);
 			var solvedGrid = sweeper.solve(grid);
 			solvedGrid.eachRow(function(row) {
 				$("body").append("<br>");
 				_(row).each(function(cell){
-					var btn = sweeper.createButton(cell);
-					$("body").append(btn);
+					$("body").append(sweeper.createButton(cell));
 				});
 			});
 		},
-		
 	};
 })();
 
 
+
 var field = ".....*\n"+
-"*.....\n"+
-"*.....\n"+
-"......";
-
-sweeper.setupPlayfield(field);
-
+			"*.....\n"+
+			"*...*.\n"+
+			"*.....\n"+
+			"......";
+sweeper.initGame(field);
