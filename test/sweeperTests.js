@@ -4,43 +4,56 @@ TestCase("FirstTestcase", {
 	   assertTrue(sweeper !== undefined);
     },
 
+	testFieldToGrid: function(){
+		var field = "..*\n"+
+					"*..\n"+
+					"...";
 
-	testTurnFieldStringIntoGrid: function(){
-		var field ="..*\n"+
-		"...\n"+
-		"*..";
+		var expected = new Grid([[".",".","*"],	
+								["*",".","."],	
+								[".",".","."]]);
+						
+		var actual = sweeper.fieldToGrid(field);
+		assertTrue(expected.equals(actual));				
+	},
 
-		var expected = new Grid([[".",".","*"],
-								[".",".","."],
-								["*",".","."]]);
+	testCountNeighbourMines: function(){
+		var grid = new Grid([[".",".","*"],	
+							["*",".","."],	
+							[".",".","."]]);
+	
+		assertEquals(2,sweeper.countMinedNeighbours(grid, 1,1));
 		
-		var actual = sweeper.fieldStringToGrid(field);
-		assertTrue(expected.equals(actual));
-	},					
-	
-	testMinecount: function(){
-		var grid = new Grid([[".",".","*"],
-							 [".",".","."],
-							 ["*",".","."]]);
+	},
 
-		assertEquals(2, sweeper.countMinedNeighbours(grid, 1, 1));				
+	testSolveAField: function(){
+		var grid = new Grid([[".",".","*"],	
+							["*",".","."],	
+							[".",".","."]]);
+		var expected = new Grid([["1","2","*"],	
+							   ["*","2","1"],	
+						       ["1","1","0"]]);	
+						
+		var actual = sweeper.solve(grid);
+		assertTrue(expected.equals(actual));										
+	},
+
+	testCreateButton: function(){
+		var button = sweeper.createButton("*");
+		assertEquals(button.html(),"?");
+		assertEquals(button.attr("class"), "button");
 	},
 	
-	testSolveField: function(){
-		var grid = new Grid([[".",".","*"],
-							 [".",".","."],
-							 ["*",".","."]]);
-							
-		var soluton = new Grid([["0","1","*"],
-							   ["1","2","1"],
-							   ["*","1","0"]]);		
-										
-		assertEquals(soluton, sweeper.solve(grid));					
-	},
-	
-	testButtonCreation: function(){
-		var btn = sweeper.createButton("*");
-		assertEquals("?", btn.html());
-	},
+	testCreatePlayFieldInDOM: function(){
+			var field = "..*\n"+
+						"*..\n"+
+						"...";
+		
+			sweeper.initGame(field);
+			
+			var btnsCreated = $(".button");
+			assertEquals(9,btnsCreated.length);
+	}
+
 
 });
