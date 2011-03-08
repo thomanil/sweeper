@@ -8,43 +8,44 @@ var sweeper = (function() { // Module pattern
 	return {
 		// Public methods
 		
-		fieldToGrid: function(field){
+		toGrid: function(field){
 			var rows = field.split(/\n/);
-			twoDimArray = [];
+			
+			var twoDimArray = [];
 			_(rows).each(function(row){
-				var cells = []
+				var cells = [];
 				_(row).each(function(character){
 					cells.push(character);
 				});
 				twoDimArray.push(cells);
 			});
-			return new Grid(twoDimArray);	
+			return new Grid(twoDimArray);
 		},
 		
 		countMinedNeighbours: function(grid, x, y){
 			var isMined = function(deltaX, deltaY) {
-				var xPos = x + deltaX;
-				var yPos = y + deltaY;
-				if (grid.get(xPos, yPos) === "*") {
+				var xPos = x+deltaX;
+				var yPos = y+deltaY;
+				if (grid.get(xPos,yPos) === "*") {
 					return true;
 				} else {
 					return false;
 				}
 			};
 			
-			var minedNeighbours = 0;
 			
+			var minedNeighbours = 0;
+		
 			if (isMined(-1,-1)) {minedNeighbours++;}
 			if (isMined(0,-1)) {minedNeighbours++;}
 			if (isMined(1,-1)) {minedNeighbours++;}
-			
 			if (isMined(-1,1)) {minedNeighbours++;}
 			if (isMined(0,1)) {minedNeighbours++;}
 			if (isMined(1,1)) {minedNeighbours++;}
-			
 			if (isMined(-1,0)) {minedNeighbours++;}
-			if (isMined(1,0)) {minedNeighbours++;}
-			
+			if (isMined(1,0)) {minedNeighbours++;}		
+		
+		
 			return minedNeighbours;
 		},
 		
@@ -55,34 +56,33 @@ var sweeper = (function() { // Module pattern
 				} else {
 					return ""+sweeper.countMinedNeighbours(grid, x, y);
 				}
-			});
+			});	
 		},
 		
 		createButton: function(cell){
-			var button = $("<span>?</span>");
-			button.attr("class", "button");
-			button.css("font-size", "300%").css("color", "orange");
-			
-			button.click(function() {
-				button.html(cell);
+			var btn = $("<span class='button'>?</span>");
+			btn.css("color","orange");
+			btn.css("font-size","300%");
+			btn.click(function() {
+				btn.html(cell);
 				if (cell === "*") {
-					button.css("color", "red");
-					alert("BOOOM!");
+					btn.css("color","red");
+					alert("BOOOOM GAME OVER");
 				} else {
-					button.css("color", "green");
+					btn.css("color","green");
 				}
 			});
-			
-			return button;
+			return btn;
 		},
 		
-		initGame: function(field){
-			var grid = sweeper.fieldToGrid(field);
+		setupPlayfield: function(field){
+			var grid = sweeper.toGrid(field);
 			var solvedGrid = sweeper.solve(grid);
 			solvedGrid.eachRow(function(row) {
 				$("body").append("<br>");
 				_(row).each(function(cell){
-					$("body").append(sweeper.createButton(cell));
+					var btn = sweeper.createButton(cell);
+					$("body").append(btn);
 				});
 			});
 		},
@@ -90,12 +90,11 @@ var sweeper = (function() { // Module pattern
 	};
 })();
 
-	var field = ".....*\n"+
-				"*.....\n"+
-				".....*\n"+
-				"*.....\n"+
-				"......";
-				
-	sweeper.initGame(field);			
 
+var field = ".....*\n"+
+"*.....\n"+
+"*.....\n"+
+"......";
+
+sweeper.setupPlayfield(field);
 
