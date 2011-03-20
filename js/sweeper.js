@@ -11,7 +11,6 @@ var sweeper = (function() { // Module pattern
 		toGrid: function(field){
 			var fieldRows = field.split(/\n/);
 			var twoDimArray = [];
-			
 			_(fieldRows).each(function(row){
 				var cells = [];
 				_(row).each(function(character){
@@ -19,29 +18,28 @@ var sweeper = (function() { // Module pattern
 				});
 				twoDimArray.push(cells);
 			});
-
+			
 			return new Grid(twoDimArray);
 		},
-
-
+	
 		countMinedNeighbours: function(grid, x, y){
 			var isMined = function(deltaX, deltaY) {
-				var xPos = x+deltaX;
-				var yPos = y+deltaY;
+				var xPos = deltaX+x;
+				var yPos = deltaY+y;
 				return (grid.get(xPos, yPos) === "*");
-			};
+			}
+			var mineCount = 0;
 			
-			var minedNeighbours = 0;
-			if (isMined(-1,-1)) {minedNeighbours++;}
-			if (isMined(0,-1)) {minedNeighbours++;}
-			if (isMined(1,-1)) {minedNeighbours++;}
-			if (isMined(-1,1)) {minedNeighbours++;}
-			if (isMined(0,1)) {minedNeighbours++;}
-			if (isMined(1,1)) {minedNeighbours++;}
-			if (isMined(-1,0)) {minedNeighbours++;}
-			if (isMined(1,0)) {minedNeighbours++;}						
-									
-			return minedNeighbours;
+			if (isMined(-1,-1)) { mineCount++; }
+			if (isMined(0,-1)) { mineCount++; }
+			if (isMined(1,-1)) { mineCount++; }	
+			if (isMined(-1,1)) { mineCount++; }
+			if (isMined(0,1)) { mineCount++; }
+			if (isMined(1,1)) { mineCount++; }	
+			if (isMined(1,0)) { mineCount++; }	
+			if (isMined(-1,0)) { mineCount++; }								
+			
+			return mineCount;
 		},
 		
 		solve: function(grid){
@@ -51,17 +49,17 @@ var sweeper = (function() { // Module pattern
 				} else {
 					return ""+sweeper.countMinedNeighbours(grid, x, y);
 				}
-			});
+			});					
 		},
 		
 		createButton: function(cell){
 			var btn = $("<span class='button'>?</span>");
-			btn.css("font-size","500%").css("color","orange");
+			btn.css("color","orange").css("font-size","500%");
 			btn.click(function() {
 				btn.html(cell);
 				if (cell === "*") {
 					btn.css("color","red");
-					alert("BOOOM GAME OVER MAN!");
+					alert("GAME OVER MAN, GAMe OVER");
 				} else {
 					btn.css("color","green");
 				}
@@ -81,15 +79,14 @@ var sweeper = (function() { // Module pattern
 			});
 		},
 		
-		
 	};
 })();
 
 
 var field = ".....*\n"+
-			"*....*\n"+
+			"*.....\n"+
 			"*..*..\n"+
 			"*.....\n"+
-			".*....";
+			"....*.";
 			
-sweeper.initGame(field);			
+sweeper.initGame(field);
