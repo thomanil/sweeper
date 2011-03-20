@@ -11,6 +11,7 @@ var sweeper = (function() { // Module pattern
 		toGrid: function(field){
 			var fieldRows = field.split(/\n/);
 			var twoDimArray = [];
+			
 			_(fieldRows).each(function(row){
 				var cells = [];
 				_(row).each(function(character){
@@ -18,28 +19,29 @@ var sweeper = (function() { // Module pattern
 				});
 				twoDimArray.push(cells);
 			});
-		
+
 			return new Grid(twoDimArray);
 		},
-		
+
+
 		countMinedNeighbours: function(grid, x, y){
 			var isMined = function(deltaX, deltaY) {
 				var xPos = x+deltaX;
 				var yPos = y+deltaY;
-				return (grid.get(xPos,yPos) === "*");
+				return (grid.get(xPos, yPos) === "*");
 			};
-			var mineCount = 0;
 			
-			if (isMined(-1, -1)) { mineCount++; }
-			if (isMined(0, -1)) { mineCount++; }
-			if (isMined(1, -1)) { mineCount++; }
-			if (isMined(-1, 1)) { mineCount++; }
-			if (isMined(0, 1)) { mineCount++; }
-			if (isMined(1, 1)) { mineCount++; }
-			if (isMined(-1, 0)) { mineCount++; }
-			if (isMined(1, 0)) { mineCount++; }
-			
-			return mineCount;
+			var minedNeighbours = 0;
+			if (isMined(-1,-1)) {minedNeighbours++;}
+			if (isMined(0,-1)) {minedNeighbours++;}
+			if (isMined(1,-1)) {minedNeighbours++;}
+			if (isMined(-1,1)) {minedNeighbours++;}
+			if (isMined(0,1)) {minedNeighbours++;}
+			if (isMined(1,1)) {minedNeighbours++;}
+			if (isMined(-1,0)) {minedNeighbours++;}
+			if (isMined(1,0)) {minedNeighbours++;}						
+									
+			return minedNeighbours;
 		},
 		
 		solve: function(grid){
@@ -54,12 +56,12 @@ var sweeper = (function() { // Module pattern
 		
 		createButton: function(cell){
 			var btn = $("<span class='button'>?</span>");
-			btn.css("color","orange").css("font-size","500%");
+			btn.css("font-size","500%").css("color","orange");
 			btn.click(function() {
 				btn.html(cell);
 				if (cell === "*") {
 					btn.css("color","red");
-					alert("BOOOOM GAME OVER!");
+					alert("BOOOM GAME OVER MAN!");
 				} else {
 					btn.css("color","green");
 				}
@@ -70,22 +72,24 @@ var sweeper = (function() { // Module pattern
 		initGame: function(field){
 			var grid = sweeper.toGrid(field);
 			var solvedGrid = sweeper.solve(grid);
-			solvedGrid.eachRow(function(cells) {
-				$("body").append("<br>");
-				_(cells).each(function(cell){
+			solvedGrid.eachRow(function(row) {
+				_(row).each(function(cell){
 					var btn = sweeper.createButton(cell);
 					$("body").append(btn);
 				});
+				$("body").append("<br>");
 			});
 		},
+		
 		
 	};
 })();
 
 
 var field = ".....*\n"+
+			"*....*\n"+
+			"*..*..\n"+
 			"*.....\n"+
-				"*.....\n"+
-			"..*...";
+			".*....";
 			
 sweeper.initGame(field);			
