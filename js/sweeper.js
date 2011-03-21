@@ -25,19 +25,20 @@ var sweeper = (function() { // Module pattern
 			var isMined = function(deltaX, deltaY) {
 				var xPos = x+deltaX;
 				var yPos = y+deltaY;
-				return (grid.get(xPos,yPos) === "*");
+				if (grid.get(xPos,yPos) === "*") {
+					return true;
+				}
 			};
 			var mineCount = 0;
-			
 			if (isMined(-1,-1)) {mineCount++;}
-			if (isMined(0,-1)) {mineCount++;}	
-			if (isMined(1,-1)) {mineCount++;}					
+			if (isMined(0,-1)) {mineCount++;}
+			if (isMined(1,-1)) {mineCount++;}
 			if (isMined(-1,1)) {mineCount++;}
-			if (isMined(0,1)) {mineCount++;}	
+			if (isMined(0,1)) {mineCount++;}
 			if (isMined(1,1)) {mineCount++;}
-			if (isMined(-1,0)) {mineCount++;}
-			if (isMined(1,0)) {mineCount++;}											
-			
+			if (isMined(-1,0)) {mineCount++;}						
+			if (isMined(1,0)) {mineCount++;}
+						
 			return mineCount;
 		},
 		
@@ -53,14 +54,14 @@ var sweeper = (function() { // Module pattern
 		
 		createButton: function(cell){
 			var btn = $("<span class='button'>?</span>");
-			btn.css("color", "orange").css("font-size", "500%");
+			btn.css("color","orange").css("font-size", "500%");
 			btn.click(function() {
 				btn.html(cell);
 				if (cell === "*") {
-					btn.css("color", "red");
-					alert("game over man, game over.");
+					btn.css("color","red");
+					alert("game over, man. game over.");
 				} else {
-					btn.css("color", "green");					
+					btn.css("color","green")
 				}
 			});
 			return btn;
@@ -77,13 +78,14 @@ var sweeper = (function() { // Module pattern
 				$("body").append("<br>");
 			});
 		},
+		
 	};
 })();
 
 var field = ".....*\n"+
+			"*..*..\n"+
 			"*.....\n"+
-			"*...*.\n"+
 			"*.....\n"+
-			"..*...";
-			
-sweeper.initGame(field);			
+			"...*..";
+
+sweeper.initGame(field);
