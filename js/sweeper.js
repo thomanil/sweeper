@@ -9,8 +9,8 @@ var sweeper = (function() { // Module pattern
 		// Public methods
 		
 		toGrid: function(field){
-			var fieldRows = field.split(/\n/);
 			var twoDimArray = [];
+			var fieldRows = field.split(/\n/);
 			_(fieldRows).each(function(row){
 				var cells = [];
 				_(row).each(function(character){
@@ -18,6 +18,7 @@ var sweeper = (function() { // Module pattern
 				});
 				twoDimArray.push(cells);
 			});
+			
 			return new Grid(twoDimArray);
 		},
 		
@@ -28,14 +29,14 @@ var sweeper = (function() { // Module pattern
 				return (grid.get(xPos,yPos) === "*");
 			};
 			var mineCount = 0;
-			if (isMined(-1, -1)) {mineCount++;}
-			if (isMined(0, -1)) {mineCount++;}
-			if (isMined(1, -1)) {mineCount++;}
-			if (isMined(-1, 1)) {mineCount++;}
-			if (isMined(0, 1)) {mineCount++;}
-			if (isMined(1, 1)) {mineCount++;}
-			if (isMined(-1, 0)) {mineCount++;}						
-			if (isMined(1, 0)) {mineCount++;}
+			if (isMined(-1,-1)) { mineCount++; }
+			if (isMined(0,-1)) { mineCount++; }
+			if (isMined(1,-1)) { mineCount++; }
+			if (isMined(-1,1)) { mineCount++; }
+			if (isMined(0,1)) { mineCount++; }
+			if (isMined(1,1)) { mineCount++; }
+			if (isMined(-1,0)) { mineCount++; }
+			if (isMined(1,0)) { mineCount++; }						
 			return mineCount;
 		},
 		
@@ -44,7 +45,7 @@ var sweeper = (function() { // Module pattern
 				if (cell === "*") {
 					return cell;
 				} else {
-					return ""+sweeper.countMinedNeighbours(grid, x, y);
+					return ""+sweeper.countMinedNeighbours(grid,x,y);
 				}
 			});
 		},
@@ -56,8 +57,8 @@ var sweeper = (function() { // Module pattern
 			btn.click(function() {
 				btn.html(cell);
 				if (cell === "*") {
-					btn.css("color","red");
-					alert("GAME OVER MAN. GAME OVER.");
+					btn.css("color","red");	
+					alert("GAME OVER, MAN! GAME OVER.");
 				} else {
 					btn.css("color","green");
 				}
@@ -79,11 +80,10 @@ var sweeper = (function() { // Module pattern
 	};
 })();
 
-
-var field =".....*\n"+
+var field = ".....*\n"+
 			"*.....\n"+
-			"*.*...\n"+
-			"*.....\n"+
-			"..*...";
+			"....*.\n"+
+			"*.....\n"+						
+			"......";
+sweeper.initGame(field);
 			
-sweeper.initGame(field);			
