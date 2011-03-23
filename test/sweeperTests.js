@@ -8,31 +8,32 @@ TestCase("FirstTestcase", {
 		var field = "..*\n"+
 					"*..\n"+
 					"...";
+		
 		var expected = new Grid([[".",".","*"],
-							["*",".","."],
-							[".",".","."]]);
-		var actual = sweeper.toGrid(field);
-		assertTrue(expected.equals(actual));		
-	},
-
-	testNeighbourMineCount: function(){
-		var grid = new Grid([[".",".","*"],
 								["*",".","."],
 								[".",".","."]]);
-		var expectedMinesAroundPos11 = 2;	
-		var actualMineCount = sweeper.countMinedNeighbours(grid,1,1);	
-		assertEquals(expectedMinesAroundPos11,actualMineCount);				
+		var actual = sweeper.toGrid(field);
+		assertTrue(expected.equals(actual));			
 	},
 	
-	testSolve: function(){
+	testCountNeighbourMines: function(){
 		var grid = new Grid([[".",".","*"],
-								["*",".","."],
-								[".",".","."]]);
-		var expected = 	new Grid([["1","2","*"],
-								["*","2","1"],
-								["1","1","0"]]);	
+							["*",".","."],
+							[".",".","."]]);
+		var expectedMinesAround	= 2;
+		var actualCount = sweeper.countMinedNeighbours(grid,1,1);
+		assertEquals(expectedMinesAround,actualCount);				
+	},
+	
+	testSolveGrid: function(){
+		var grid = new Grid([[".",".","*"],
+							["*",".","."],
+							[".",".","."]]);
+		var expected = new Grid([["1","2","*"],
+							["*","2","1"],
+							["1","1","0"]]);
 		var actual = sweeper.solve(grid);
-		assertTrue(expected.equals(actual));
+		assertTrue(expected.equals(actual));												
 	},
 	
 	testCreateButton: function(){
@@ -45,10 +46,10 @@ TestCase("FirstTestcase", {
 		var field = "..*\n"+
 					"*..\n"+
 					"...";
-		sweeper.initGame(field);
-		var expectedNoButtons = 9;
-		var actualNoButtons = $(".button").length;
-		assertEquals(expectedNoButtons,actualNoButtons);
+	    sweeper.initGame(field);
+		var expectedNoCreatedButtons = 9;
+		var actualButtons = $(".button").length;
+		assertEquals(expectedNoCreatedButtons,actualButtons);
 	},
 
 });

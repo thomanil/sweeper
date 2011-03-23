@@ -21,12 +21,12 @@ var sweeper = (function() { // Module pattern
 			
 			return new Grid(twoDimArray);
 		},
-		
+	
 		countMinedNeighbours: function(grid,x,y){
 			var isMined = function(deltaX, deltaY) {
 				var xPos = x+deltaX;
 				var yPos = y+deltaY;
-				return (grid.get(xPos,yPos) === "*");
+				return (grid.get(xPos,yPos) === "*");	
 			};
 			var mineCount = 0;
 			if (isMined(-1,-1)) { mineCount++; }
@@ -36,12 +36,12 @@ var sweeper = (function() { // Module pattern
 			if (isMined(0,1)) { mineCount++; }
 			if (isMined(1,1)) { mineCount++; }
 			if (isMined(-1,0)) { mineCount++; }
-			if (isMined(1,0)) { mineCount++; }						
+			if (isMined(1,0)) { mineCount++; }	
 			return mineCount;
 		},
 		
 		solve: function(grid){
-			return grid.map(function(cell,x,y) {
+			return grid.map(function(cell, x, y) {
 				if (cell === "*") {
 					return cell;
 				} else {
@@ -57,12 +57,14 @@ var sweeper = (function() { // Module pattern
 			btn.click(function() {
 				btn.html(cell);
 				if (cell === "*") {
-					btn.css("color","red");	
-					alert("GAME OVER, MAN! GAME OVER.");
-				} else {
+					btn.css("color","red");
+					alert("Bill Paxton sier GAME OVER, GAMe OVER!");
+				} else{
 					btn.css("color","green");
 				}
 			});
+			
+			
 			return btn;
 		},
 		
@@ -77,13 +79,14 @@ var sweeper = (function() { // Module pattern
 				$("body").append("<br>");
 			});
 		},
+		
 	};
 })();
 
 var field = ".....*\n"+
 			"*.....\n"+
-			"....*.\n"+
-			"*.....\n"+						
+						"*.....\n"+
+									"*.....\n"+
 			"......";
+
 sweeper.initGame(field);
-			
